@@ -1,24 +1,30 @@
 <template>
     <div class="home-wrapper">
         <h1 class='logo'>Hero<span>last</span></h1>
-        <AuthForm @submit:form="handlerRegistered" />
+        <AuthForm @submit:form="handlerAuth" />
     </div>
 </template>
 
 <script lang="ts">
+import { IFormPayload } from '@/interface/auth-form.interface';
 import { defineComponent } from 'vue'
 import AuthForm from "../../Components/AuthForm/AuthForm.vue";
+import { useUserStore } from '../../stor/userStor'
+
 export default defineComponent({
     name: 'HomePage',
     components: {
         AuthForm,
     },
+    methods: {
+        async handlerAuth(formData: IFormPayload) {// TODO: separate methods(reg or log) use formData.action 
+            await this.userStor.login(formData.value);
+        }
+    },
     setup() {
-       const handlerRegistered = (user: any) => {
-        console.log(user)
-       }
+       const userStor = useUserStore();
 
-        return {handlerRegistered}
+       return { userStor }
     }
 })
 </script>

@@ -1,7 +1,13 @@
 <template>
     <form @submit.prevent="handleSubmit" class="auth-form">
-        <p-select-btn v-model="action" :options="options" :unselectable='false' aria-labelledby="single" class="p-button-secondary action-select" />
-        
+        <p-select-btn
+            v-model="action"
+            :options="options"
+            :unselectable="false"
+            aria-labelledby="single"
+            class="p-button-secondary action-select"
+        />
+
         <span class="p-float-label auth-form__field">
             <p-input id="email" type="email" v-model="state.email" />
             <label for="email">Email</label>
@@ -18,19 +24,21 @@
             <p-input id="password" type="password" v-model="state.repeatPassword" />
             <label for="password">Repeat password</label>
         </span>
-        <p-button 
-         :disabled='action === "sign-in" ? validSignIn : validLogIn'
-          type='submit'
-          class="auth-form__submit-button p-button-secondary" >Submit</p-button>
+        <p-button
+            :disabled="action === 'sign-in' ? validSignIn : validLogIn"
+            type="submit"
+            class="auth-form__submit-button p-button-secondary"
+            >Submit</p-button
+        >
     </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted, computed} from 'vue'
-import { IFormPayload, formAction, authAction } from '@/interface/auth-form.interface'
+import { defineComponent, reactive, ref, onMounted, computed } from 'vue';
+import { IFormPayload, formAction, authAction } from '@/interface/auth-form.interface';
 export default defineComponent({
     name: 'AuthForm',
-    setup(props, {emit}) {
+    setup(props, { emit }) {
         const state = reactive({
             name: '',
             email: '',
@@ -42,34 +50,43 @@ export default defineComponent({
         const options = ref<formAction[]>([authAction.SIGN_IN, authAction.LOGIN]);
 
         const validSignIn = computed(() => {
-            return !(state.password && state.name && state.email && state.password === state.repeatPassword)
-        })
+            return !(state.password && state.name && state.email && state.password === state.repeatPassword);
+        });
 
         const validLogIn = computed(() => {
-            return !(state.password && state.email)
-        })
-        
+            return !(state.password && state.email);
+        });
+
         const handleSubmit = () => {
             const payload: IFormPayload = {
                 action: action.value,
-                email: state.email,
-                name: state.name,
-                password: state.password,
-            }
-            emit('submit:form', payload)
+                value: {
+                    email: state.email,
+                    name: state.name,
+                    password: state.password,
+                },
+            };
+            emit('submit:form', payload);
             resetForm();
-        }
+        };
 
         const resetForm = () => {
             state.name = '';
             state.email = '';
             state.password = '';
             state.repeatPassword = '';
-        }
+        };
 
-        return { state, handleSubmit, validSignIn, options, action, validLogIn }
-    }
-})
+        return {
+            state,
+            handleSubmit,
+            validSignIn,
+            options,
+            action,
+            validLogIn,
+        };
+    },
+});
 </script>
 
 
@@ -96,19 +113,19 @@ export default defineComponent({
             width: 50%;
         }
         &::v-deep div:hover {
-        background-color: rgb(0, 27, 134);
+            background-color: rgb(0, 27, 134);
         }
         &::v-deep .p-highlight {
-        background-color: #2a3040;
+            background-color: #2a3040;
         }
     }
-       
+
     &__field {
         width: 80%;
         display: flex;
         margin: 0 auto;
         .p-inputtext {
-          width: 100%;
+            width: 100%;
         }
         &:not(:last-child) {
             margin-bottom: 2rem;
