@@ -14,22 +14,11 @@ export const unsetToken = () => {
 
 export function authService(payload: IFormPayload) {
     const flow = {
-        [authAction.LOGIN]: loginFlow,
+        [authAction.LOGIN]: loginFlow, 
         [authAction.SIGN_IN]: registrationFlow
     }
 
     return flow[payload.action](payload.value);
-}
-
-export async function logoutAction() {
-    try {
-        const userStor = useUserStore();
-        const data = await userStor.logout();
-        console.log('DATA', data);
-        unsetToken();
-    } catch (error) {
-         console.log('>>>>ERRR',error);
-    }
 }
 
 async function loginFlow(payload: IValueAuthPayload) {
@@ -49,6 +38,17 @@ async function registrationFlow(payload: IValueAuthPayload) {
         console.log('DATA', data)
     } catch (error) {
         console.log('>>>>ERRR',error);
+    }
+}
+
+export async function logoutAction() {
+    try {
+        const userStor = useUserStore();
+        const data = await userStor.logout();
+        console.log('DATA', data);
+        unsetToken();
+    } catch (error) {
+         console.log('>>>>ERRR',error);
     }
 }
 

@@ -11,10 +11,12 @@ import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
+import { initAppInstance } from './services/common.service'
 
 
 
 const app = createApp(App);
+initAppInstance(app);
 const pinia = createPinia();
 
 app.use(PrimeVue, { ripple: true });

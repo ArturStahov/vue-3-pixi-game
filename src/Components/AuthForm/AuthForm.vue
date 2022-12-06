@@ -23,6 +23,7 @@
         <span v-if="action === 'sign-in'" class="p-float-label auth-form__field">
             <p-input id="password" type="password" v-model="state.repeatPassword" />
             <label for="password">Repeat password</label>
+            <p v-if='visibleQuote' class="quote">no correct Repeat password value</p>
         </span>
         <p-button
             :disabled="action === 'sign-in' ? validSignIn : validLogIn"
@@ -57,6 +58,10 @@ export default defineComponent({
             return !(state.password && state.email);
         });
 
+        const visibleQuote = computed(() => {
+            return !!(state.password && state.password !== state.repeatPassword);
+        });
+
         const handleSubmit = () => {
             const payload: IFormPayload = {
                 action: action.value,
@@ -84,6 +89,7 @@ export default defineComponent({
             options,
             action,
             validLogIn,
+            visibleQuote,
         };
     },
 });
@@ -100,6 +106,14 @@ export default defineComponent({
     box-shadow: 4px 4px 15px 4px #cbcbcb6e;
     &__title {
         margin-bottom: 2rem;
+    }
+
+    .quote {
+        position: absolute;
+    bottom: -35px;
+    left: 6px;
+    font-size: 12px;
+    color: var(--red-700);
     }
 
     label {
