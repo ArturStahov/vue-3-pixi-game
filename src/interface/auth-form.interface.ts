@@ -7,9 +7,11 @@ export type formAction = authAction.LOGIN | authAction.SIGN_IN
 
 export interface IFormPayload {
   action: formAction,
-  value: {
-    email: string,
-    name?: string,
-    password: string,
-  }
+  value: IValueAuthPayload,
+}
+
+export interface IValueAuthPayload {
+  email: string,
+  name?: string,
+  password: string,
 }

@@ -10,6 +10,7 @@ import { IFormPayload } from '@/interface/auth-form.interface';
 import { defineComponent } from 'vue'
 import AuthForm from "../../Components/AuthForm/AuthForm.vue";
 import { useUserStore } from '../../stor/userStor'
+import { authService } from '../../services/auth.service';
 
 export default defineComponent({
     name: 'HomePage',
@@ -17,8 +18,8 @@ export default defineComponent({
         AuthForm,
     },
     methods: {
-        async handlerAuth(formData: IFormPayload) {// TODO: separate methods(reg or log) use formData.action 
-            await this.userStor.login(formData.value);
+        async handlerAuth(formData: IFormPayload) {
+            await authService(formData);
         }
     },
     setup() {

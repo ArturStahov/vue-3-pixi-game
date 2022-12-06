@@ -17,7 +17,7 @@
             <label for="username">Username</label>
         </span>
         <span class="p-float-label auth-form__field">
-            <p-input id="password" type="password" v-model="state.password" />
+            <p-input id="password" type="password" v-model="state.password" minLength='8' />
             <label for="password">Password</label>
         </span>
         <span v-if="action === 'sign-in'" class="p-float-label auth-form__field">

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
-import * as authController from '../services/auth.service';
 import * as userHttp from '../services/api/user-http.service';
-import { ILoginPayload, IRegistrationPayload, IUser } from '@/interface/user.interface';
+import { IRegistrationPayload, IUser } from '@/interface/user.interface';
+import { IValueAuthPayload } from '@/interface/auth-form.interface';
 
 
 export const useUserStore = defineStore('user', {
@@ -14,23 +14,32 @@ export const useUserStore = defineStore('user', {
     getUser: (state) => state.user,
   },
   actions: {
-    async login(payload: ILoginPayload) {
+    async login(payload: IValueAuthPayload): Promise<IUser | Error> {
       try {
         const data = await userHttp.login(payload);
-        authController.setToken(data.token);
         this.user = {...data};
-      } catch (error) {
-        console.log('ERROR>>', error);
+        return data;
+      } catch (error: any) {
+        throw new Error(error.message);
       }
     },
 
-    registration(payload: IRegistrationPayload) {
-
+    async registration(payload: IValueAuthPayload): Promise<IUser | Error> {
+      try {
+        const data = await userHttp.registration(payload as IRegistrationPayload);
+        return data;
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
     },
 
-    async logout() {
-      await userHttp.logOut();
-      authController.unsetToken();
+    async logout(): Promise<any | Error> {
+      try {
+        const data = await userHttp.logOut();
+        return data;
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
     },
   },
   })
